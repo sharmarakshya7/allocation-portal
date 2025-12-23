@@ -4,11 +4,13 @@ const { prorate } = require('./prorate'); // Import the correct proration algori
 
 const app = express();
 
+//Frontend URLs
 const allowedOrigins = [
     "http://localhost:3000",
     process.env.FRONTEND_URL
 ];
 
+//CORS setting//
 app.use(
     cors({
         origin: function (origin, callback) {
@@ -24,10 +26,12 @@ app.use(
     })
 );
 
+//For handling preflight option request
 app.options("*", (req, res) => {
     res.sendStatus(200);
 });
 
+//Parse JSON
 app.use(express.json());
 
 // Health check
@@ -51,6 +55,7 @@ app.get('/', (req, res) => {
     });
 });
 
+//Alternate root endpoint
 app.get('/api', (req, res) => {
     res.json({
         message: 'Allocation Portal API',
@@ -62,7 +67,7 @@ app.get('/api', (req, res) => {
     });
 });
 
-// Main proration endpoint - NOW USES THE CORRECT ALGORITHM
+// Main endpoint to calculate investor allocation //
 app.post('/api/prorate', (req, res) => {
     try {
         const { allocation_amount, investor_amounts } = req.body;
@@ -87,7 +92,7 @@ app.post('/api/prorate', (req, res) => {
             });
         }
 
-        // Calculate proration using the CORRECT algorithm from prorate.js
+        // Call prorate function from prorate.js to Calculate proration //
         const results = prorate(allocation_amount, investor_amounts);
 
         res.json(results);

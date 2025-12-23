@@ -2,40 +2,45 @@
 
 import { useState } from 'react';
 import styles from './page.module.css';
+import AllocationForm from "./AllocationForm";
+import ResultsPanel from "./ResultsPanel";
 
+//For storing total allocation amount entered by user
 export default function Home() {
   const [allocation, setAllocation] = useState('');
   const [investors, setInvestors] = useState([
     { name: '', requested: '', average: '' },
     { name: '', requested: '', average: '' }
   ]);
+
+//For storing calculation result
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // backend URL from environment variable
+// backend  base URL from environment variable
   const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  // Add investor
+// Add new row for investor
   const addInvestor = () => {
     setInvestors([...investors, { name: '', requested: '', average: '' }]);
   };
 
-  // Remove investor
+// Remove investor row but keep at least one
   const removeInvestor = (index) => {
     if (investors.length > 1) {
       setInvestors(investors.filter((_, i) => i !== index));
     }
   };
 
-  // Update investor
+// Update specific field for investors
   const updateInvestor = (index, field, value) => {
     const updated = [...investors];
     updated[index][field] = value;
     setInvestors(updated);
   };
 
-  // Load example
+// Load example for reference
   const loadExample = () => {
     setAllocation('100');
     setInvestors([
@@ -44,7 +49,7 @@ export default function Home() {
     ]);
   };
 
-  // Reset form
+// Reset
   const reset = () => {
     setAllocation('');
     setInvestors([
@@ -55,25 +60,25 @@ export default function Home() {
     setError('');
   };
 
-  // Calculate proration
+ // Calculate proration // called when form is submitted
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setResults(null);
 
-    // Validate
+ // Validating allocation input
     if (!allocation || parseFloat(allocation) <= 0) {
       setError('Please enter a valid allocation amount');
       return;
     }
-
+//Message when no investor name is entered
     const validInvestors = investors.filter(inv => inv.name.trim() !== '');
     if (validInvestors.length === 0) {
       setError('Please add at least one investor');
       return;
     }
 
-    // Prepare request
+    // Build request for backend
     const request = {
       allocation_amount: parseFloat(allocation),
       investor_amounts: validInvestors.map(inv => ({
@@ -86,20 +91,23 @@ export default function Home() {
     setLoading(true);
 
     try {
+      //call API
       const response = await fetch(`${API_URL}/api/prorate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(request)
       });
 
+      //handling error
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || 'Failed to calculate');
       }
-
+//Reading successful response
       const data = await response.json();
       setResults(data);
     } catch (err) {
+      //error message when API fails
       setError(`Failed to calculate proration: ${err.message}`);
       console.error('API Error:', err);
     } finally {
@@ -107,130 +115,27 @@ export default function Home() {
     }
   };
 
+  //Container for page layout
   return (
-    <div className={styles.container}>
-      {/* Main Content */}
-      <main className={styles.main}>
-        {/* Left Panel - Inputs */}
-        <div className={styles.panel}>
-          <h2>Inputs</h2>
+      <div className={styles.container}>
+        <main className={styles.main}>
+          <AllocationForm
+              styles={styles}
+              allocation={allocation}
+              setAllocation={setAllocation}
+              investors={investors}
+              addInvestor={addInvestor}
+              removeInvestor={removeInvestor}
+              updateInvestor={updateInvestor}
+              handleSubmit={handleSubmit}
+              reset={reset}
+              loadExample={loadExample}
+              loading={loading}
+              error={error}
+          />
 
-          <form onSubmit={handleSubmit}>
-            {/* Allocation Amount */}
-            <div className={styles.formGroup}>
-              <label>Total Available Allocation</label>
-              <div className={styles.inputWrapper}>
-                <span className={styles.currencySymbol}>$</span>
-                <input
-                  type="number"
-                  value={allocation}
-                  onChange={(e) => setAllocation(e.target.value)}
-                  placeholder="Allocation"
-                  min="0"
-                  step="1"
-                />
-              </div>
-            </div>
 
-            {/* Investors */}
-            <div className={styles.investorSection}>
-              <div className={styles.sectionHeader}>
-                <h3>Investor Breakdown</h3>
-                <button type="button" className={styles.btnAdd} onClick={addInvestor}>
-                  + Add Investor
-                </button>
-              </div>
-
-              <div className={styles.investorRows}>
-                {investors.map((investor, index) => (
-                  <div key={index} className={styles.investorRow}>
-                    <input
-                      type="text"
-                      value={investor.name}
-                      onChange={(e) => updateInvestor(index, 'name', e.target.value)}
-                      placeholder="Name"
-                      className={styles.inputName}
-                    />
-                    <div className={styles.inputGroup}>
-                      <span className={styles.currencySymbol}>$</span>
-                      <input
-                        type="number"
-                        value={investor.requested}
-                        onChange={(e) => updateInvestor(index, 'requested', e.target.value)}
-                        placeholder="Requested"
-                        min="0"
-                        step="1"
-                      />
-                    </div>
-                    <div className={styles.inputGroup}>
-                      <span className={styles.currencySymbol}>$</span>
-                      <input
-                        type="number"
-                        value={investor.average}
-                        onChange={(e) => updateInvestor(index, 'average', e.target.value)}
-                        placeholder="Average"
-                        min="0"
-                        step="1"
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      className={styles.btnRemove}
-                      onClick={() => removeInvestor(index)}
-                      disabled={investors.length === 1}
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Error Message */}
-            {error && <div className={styles.error}>{error}</div>}
-
-            {/* Buttons */}
-            <div className={styles.buttonGroup}>
-              <button type="submit" className={styles.btnPrimary} disabled={loading}>
-                {loading ? 'Calculating...' : 'Prorate'}
-              </button>
-              <button type="button" className={styles.btnSecondary} onClick={reset}>
-                Reset
-              </button>
-              <button type="button" className={styles.btnSecondary} onClick={loadExample}>
-                Load Example
-              </button>
-            </div>
-          </form>
-        </div>
-
-        {/* Right Panel - Results */}
-        <div className={styles.panel}>
-          <h2>Results</h2>
-
-          {results ? (
-            <div className={styles.results}>
-              {Object.entries(results).map(([name, amount]) => (
-                <div key={name} className={styles.resultItem}>
-                  <span className={styles.investorName}>{name}</span>
-                  <span className={styles.investorAmount}>${amount.toLocaleString()}</span>
-                </div>
-              ))}
-
-              <div className={styles.resultTotal}>
-                <span className={styles.totalLabel}>Total Allocated:</span>
-                <span className={styles.totalAmount}>
-                  ${Object.values(results).reduce((sum, val) => sum + val, 0).toLocaleString()}
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className={styles.noResults}>
-              <p>Enter allocation and investor details, then click "Prorate" to see results.</p>
-            </div>
-          )}
-        </div>
-      </main>
-    </div>
-  );
-}
+          <ResultsPanel styles={styles} results={results} />
+        </main>
+      </div>
+  );}

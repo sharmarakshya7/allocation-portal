@@ -1,19 +1,9 @@
-/**
- * Proration algorithm for investor allocation
- *
- * This function allocates a limited amount of capital among investors
- * based on their historical average amounts, ensuring fairness.
- *
- * @param {number} allocation_amount - Total amount available to allocate
- * @param {Array} investor_amounts - Array of investor objects with:
- *   - name: string - Investor name
- *   - requested_amount: number - Amount investor requested
- *   - average_amount: number - Historical average investment amount (basis for proration)
- * @returns {Object} Object with investor names as keys and allocated amounts as values
- */
+
+/** Proration calculation formula for investor allocation */
 function prorate(allocation_amount, investor_amounts) {
     // Initialize result object
     const result = {};
+
 
     // Calculate total requested amount across all investors
     const total_requested = investor_amounts.reduce(
@@ -30,8 +20,8 @@ function prorate(allocation_amount, investor_amounts) {
         return result;
     }
 
-    // Case 2: Oversubscribed - need to prorate based on AVERAGE amounts
-    // Step 1: Calculate total of all average amounts (this is the denominator)
+    // Case 2: prorate based on AVERAGE amounts
+    // Step 1: Calculate total of all average amounts
     const total_average = investor_amounts.reduce(
         (sum, investor) => sum + investor.average_amount,
         0
@@ -47,7 +37,7 @@ function prorate(allocation_amount, investor_amounts) {
         const proportional_allocation =
             allocation_amount * (investor.average_amount / total_average);
 
-        // Constrain: cannot exceed what they requested
+        // Rule cannot exceed what they requested
         const capped_allocation = Math.min(
             proportional_allocation,
             investor.requested_amount

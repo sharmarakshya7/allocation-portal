@@ -1,4 +1,9 @@
+/*Input container */
+
 .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
   background-color: #ffffff;
   background-image: radial-gradient(
@@ -9,111 +14,7 @@
 }
 
 
-/* ================= HEADER ================= */
-
-.header {
-  background: transparent;
-  background-image: none;
-  border-bottom: 1px solid rgba(229, 231, 235, 0.4);
-}
-
-
-.headerInner {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 1.25rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-}
-
-.logoSection {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.logo {
-  background: white;
-  border-radius: 10px;
-  padding: 0.45rem;
-  border: 1px solid #e5e7eb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.titleGroup h1 {
-  margin: 0;
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: -0.4px;
-  color: #0f172a;
-}
-
-.subtitle {
-  margin: 0.15rem 0 0;
-  font-size: 0.9rem;
-  color: #64748b;
-}
-
-.nav {
-  display: flex;
-  gap: 2.25rem;
-}
-
-.nav a {
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #1e293b;
-  transition: color 0.2s;
-}
-
-.nav a:hover {
-  color: #0066ff;
-}
-
-.headerActions {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.btnLogin {
-  background: white;
-  border: 1px solid #e5e7eb;
-  padding: 0.6rem 1.25rem;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-  color: #1e293b;
-}
-
-.btnLogin:hover {
-  background: #f8fafc;
-}
-
-.btnDemo {
-  background: linear-gradient(180deg, #1e293b, #0f172a);
-  color: white;
-  padding: 0.6rem 1.35rem;
-  border-radius: 10px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-}
-
-.btnDemo:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3);
-}
-
-/* ================= MAIN LAYOUT ================= */
+/* MAIN LAYOUT */
 
 .main {
   max-width: 1400px;
@@ -139,7 +40,7 @@
   color: #0f172a;
 }
 
-/* ================= FORMS ================= */
+/* FORMS */
 
 .formGroup {
   margin-bottom: 1.5rem;
@@ -164,7 +65,7 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: #1e293b;;
   pointer-events: none;
   z-index: 1;
 }
@@ -190,7 +91,7 @@
 .inputGroup input:focus,
 .investorRow input:focus {
   outline: none;
-  border-color: #0066ff;
+  border-color: #1e293b;;
 }
 
 /* Investor Section */
@@ -214,7 +115,7 @@
 }
 
 .btnAdd {
-  background: #00d4aa;
+  background: #1e293b;;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -247,7 +148,7 @@
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: #ef4444;
+  background: #802c2c;
   color: white;
   border: none;
   font-size: 1.4rem;
@@ -260,7 +161,7 @@
 }
 
 .btnRemove:hover:not(:disabled) {
-  background: #dc2626;
+  background: #7e2c2c;
 }
 
 .btnRemove:disabled {
@@ -360,7 +261,7 @@
 .investorAmount {
   font-weight: 700;
   font-size: 1.2rem;
-  color: #0066ff;
+  color: #1e293b;;
 }
 
 .resultTotal {
@@ -380,7 +281,7 @@
 .totalAmount {
   font-weight: 800;
   font-size: 1.5rem;
-  color: #00d4aa;
+  color: #1e293b;;
 }
 
 .noResults {
