@@ -6,7 +6,6 @@ const app = express();
 
 const allowedOrigins = [
     "http://localhost:3000",
-    "https://allocation-portal.vercel.app",
     "https://allocation-portal-frontend.vercel.app",
     process.env.FRONTEND_URL
 ];
@@ -26,7 +25,10 @@ app.use(
     })
 );
 
-app.options("*", cors());
+app.options("*", (req, res) => {
+    res.sendStatus(200);
+});
+
 app.use(express.json());
 
 // Health check
