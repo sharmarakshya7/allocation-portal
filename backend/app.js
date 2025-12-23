@@ -6,7 +6,6 @@ const app = express();
 
 const allowedOrigins = [
     "http://localhost:3000",
-    "https://allocation-portal-frontend.vercel.app",
     process.env.FRONTEND_URL
 ];
 
