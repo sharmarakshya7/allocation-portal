@@ -72,7 +72,7 @@ app.post('/api/prorate', (req, res) => {
     try {
         const { allocation_amount, investor_amounts } = req.body;
 
-        // Validate input
+        // Validate  input
         if (!allocation_amount || !investor_amounts || !Array.isArray(investor_amounts)) {
             return res.status(400).json({
                 error: 'Invalid input. Required: allocation_amount and investor_amounts array'

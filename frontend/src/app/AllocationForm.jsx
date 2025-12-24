@@ -20,7 +20,7 @@ export default function AllocationForm({
             <h2>Inputs</h2>
 
             <form onSubmit={handleSubmit}>
-                {/* Allocation */}
+      {/* Allocation */}
                 <div className={styles.formGroup}>
                     <label>Total Available Allocation</label>
                     <div className={styles.inputWrapper}>
@@ -36,7 +36,7 @@ export default function AllocationForm({
                     </div>
                 </div>
 
-                {/* Investors input section */}
+        {/* Investors input section */}
                 <div className={styles.investorSection}>
                     <div className={styles.sectionHeader}>
                         <h3>Investor Breakdown</h3>
@@ -57,7 +57,7 @@ export default function AllocationForm({
                                     className={styles.inputName}
                                 />
 
-                    {/* Requested amount */}
+      {/* Requested amount */}
                                 <div className={styles.inputGroup}>
                                     <span className={styles.currencySymbol}>$</span>
                                     <input
@@ -70,7 +70,7 @@ export default function AllocationForm({
                                     />
                                 </div>
 
-                     {/* Average amount*/}
+       {/* Average amount*/}
                                 <div className={styles.inputGroup}>
                                     <span className={styles.currencySymbol}>$</span>
                                     <input
@@ -83,7 +83,7 @@ export default function AllocationForm({
                                     />
                                 </div>
 
-                     {/* Remove investor button */}
+         {/* Remove investor button */}
 
                                 <button
                                     type="button"
